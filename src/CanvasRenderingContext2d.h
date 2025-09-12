@@ -105,6 +105,7 @@ class Context2d : public Nan::ObjectWrap {
     static NAN_METHOD(BeginPath);
     static NAN_METHOD(ClosePath);
     static NAN_METHOD(AddPage);
+    static NAN_METHOD(AddPageAsync);
     static NAN_METHOD(Clip);
     static NAN_METHOD(Fill);
     static NAN_METHOD(Stroke);
@@ -203,6 +204,7 @@ class Context2d : public Nan::ObjectWrap {
     void restore();
     void setFontFromState();
     void resetState();
+    static void AddPageAsyncTaskAfter(uv_work_t* req);
     inline PangoLayout *layout(){ return _layout; }
 
   private:

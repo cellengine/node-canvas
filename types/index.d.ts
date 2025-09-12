@@ -193,6 +193,13 @@ export class CanvasRenderingContext2D {
 	 * the canvas's initial size is used.
 	 */
 	addPage(width?: number, height?: number): void
+	/**
+	 * Create a new page asynchronously. When using a PDF surface, Cairo
+	 * actually creates a recording surface, then when cairo_show_page() is
+	 * called, it plays back the operations *three times*. As such, this can be
+	 * a very slow function that benefits from running in a separate thread.
+	 */
+	addPageAsync(width?: number, height?: number): void
 	save(): void;
 	restore(): void;
 	rotate(angle: number): void;
