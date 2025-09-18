@@ -22,8 +22,7 @@
       ],
       'defines': [
         'HAVE_GIF',
-        'HAVE_JPEG',
-        'HAVE_RSVG'
+        'HAVE_JPEG'
       ],
       'libraries': [
         '<!@(pkg-config pixman-1 --libs)',
@@ -41,7 +40,8 @@
         '<!@(pkg-config libpng --cflags-only-I | sed s/-I//g)',
         '<!@(pkg-config pangocairo --cflags-only-I | sed s/-I//g)',
         '<!@(pkg-config freetype2 --cflags-only-I | sed s/-I//g)',
-        '<!@(pkg-config librsvg-2.0 --cflags-only-I | sed s/-I//g)'
+        '<!@(pkg-config librsvg-2.0 --cflags-only-I | sed s/-I//g)',
+        '/opt/homebrew/include'
       ],
       'xcode_settings': {
         'GCC_ENABLE_CPP_EXCEPTIONS': 'YES'

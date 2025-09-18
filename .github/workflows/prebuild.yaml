@@ -49,8 +49,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
-        canvas_tag: ["v2.11.2"] # e.g. "v2.6.1"
+        node: [18]
+        canvas_tag: ["v2.12.0-pb"] # e.g. "v2.6.1"
     name: ${{ matrix.canvas_tag }}, Node.js ${{ matrix.node }}, Linux
     runs-on: ubuntu-latest
     container:
@@ -81,9 +81,8 @@ jobs:
           set -ex
           mkdir -p prebuild
           cp -rfv ./prebuild-branch/prebuild/* ./prebuild/
-          npm install -g node-gyp@6
+          npm install -g node-gyp
           npm install --ignore-scripts
-          . prebuild/Linux/preinstall.sh
           cp prebuild/Linux/binding.gyp binding.gyp
           node-gyp rebuild -j 2
           . prebuild/Linux/bundle.sh
@@ -142,10 +141,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [13, 14, 15, 16, 17, 18, 19]
-        canvas_tag: ["v2.11.2"] # e.g. "v2.6.1"
+        node: [18]
+        canvas_tag: ["v2.12.0-pb"] # e.g. "v2.6.1"
     name: ${{ matrix.canvas_tag}}, Node.js ${{ matrix.node }}, macOS
-    runs-on: macos-latest
+    runs-on: macos-15
     env:
       CANVAS_VERSION_TO_BUILD: ${{ matrix.canvas_tag }}
     steps:
@@ -176,6 +175,12 @@ jobs:
         run: |
           brew uninstall --force --ignore-dependencies cairo pango librsvg giflib harfbuzz
           npm test
+
+      - name: Sign the executable
+        run: |
+          for file in $(ls build/Release);
+          do codesign --deep --force --sign - build/Release/$file;
+          done;
 
       - name: Make bundle
         id: make_bundle
@@ -215,10 +220,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [13, 14, 15, 16, 17, 18, 19]
-        canvas_tag: ["v2.11.2"] # e.g. "v2.6.1"
+        node: [18]
+        canvas_tag: ["v2.12.0-pb"] # e.g. "v2.6.1"
     name: ${{ matrix.canvas_tag}}, Node.js ${{ matrix.node }}, Windows
-    runs-on: windows-2019
+    runs-on: windows-2025
     env:
       CANVAS_VERSION_TO_BUILD: ${{ matrix.canvas_tag }}
     steps:
@@ -227,6 +232,7 @@ jobs:
       # https://github.com/msys2/setup-msys2#setup-msys2
       # https://github.com/actions/virtual-environments/pull/632
       - uses: msys2/setup-msys2@v2
+        id: msys2
         with:
           msystem: UCRT64
           update: true
@@ -245,9 +251,11 @@ jobs:
 
       - name: Build
         run: |
+          winget install --accept-source-agreements --id=Microsoft.VCRedist.2010.x64 -e
+          echo "MSYS2 LOCATION: ${{steps.msys2.outputs.msys2-location}}"
           git checkout ${{ matrix.canvas_tag }}
           git checkout $env:GITHUB_SHA -- prebuild/
-          npm install -g node-gyp@8
+          npm install -g node-gyp
           npm prefix -g | % {npm config set node_gyp "$_\node_modules\node-gyp\bin\node-gyp.js"}
           npm install --ignore-scripts
           msys2 -c ". prebuild/Windows/preinstall.sh"
@@ -261,6 +269,8 @@ jobs:
       - name: Bundle pt 2
         shell: msys2 {0}
         run: |
+          # removes object files and debug
+          . prebuild/Windows/bundle.sh
           ./depends.exe -c -oc depends.csv build\\Release\\canvas.node || true
           [ -f depends.csv ] || { echo "error invoking depends.exe"; exit 1; }
 

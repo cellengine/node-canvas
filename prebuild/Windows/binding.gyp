@@ -23,7 +23,6 @@
       'defines': [
         'HAVE_GIF',
         'HAVE_JPEG',
-        'HAVE_RSVG',
         'HAVE_BOOLEAN', # or jmorecfg.h tries to define it
         '_USE_MATH_DEFINES', # for M_PI
         'NOMINMAX' # allow std::min/max to work
@@ -38,8 +37,7 @@
         'D:/a/_temp/msys64/ucrt64/lib/libglib-2.0-0.lib',
         'D:/a/_temp/msys64/ucrt64/lib/libturbojpeg.lib',
         'D:/a/_temp/msys64/ucrt64/lib/libgif-7.lib',
-        'D:/a/_temp/msys64/ucrt64/lib/libfreetype-6.lib',
-        'D:/a/_temp/msys64/ucrt64/lib/librsvg-2-2.lib'
+        'D:/a/_temp/msys64/ucrt64/lib/libfreetype-6.lib'
       ],
       'include_dirs': [
         '<!(node -e "require(\'nan\')")',
@@ -53,7 +51,6 @@
         'D:/a/_temp/msys64/ucrt64/include/pixman-1',
         'D:/a/_temp/msys64/ucrt64/include/freetype2',
         'D:/a/_temp/msys64/ucrt64/include/fontconfig',
-        'D:/a/_temp/msys64/ucrt64/include/librsvg-2.0',
         'D:/a/_temp/msys64/ucrt64/include/gdk-pixbuf-2.0',
         'D:/a/_temp/msys64/ucrt64/include/libgsf-1' # NEW
       ],

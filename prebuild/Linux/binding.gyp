@@ -22,8 +22,7 @@
       ],
       'defines': [
         'HAVE_GIF',
-        'HAVE_JPEG',
-        'HAVE_RSVG'
+        'HAVE_JPEG'
       ],
       'libraries': [
         '<!@(pkg-config pixman-1 --libs)',

@@ -15,7 +15,6 @@ pacman --noconfirm -S \
   ucrt64/mingw-w64-ucrt-x86_64-giflib \
   ucrt64/mingw-w64-ucrt-x86_64-freetype \
   ucrt64/mingw-w64-ucrt-x86_64-fontconfig \
-  ucrt64/mingw-w64-ucrt-x86_64-librsvg \
   ucrt64/mingw-w64-ucrt-x86_64-libxml2 \
   ucrt64/mingw-w64-ucrt-x86_64-libgsf
 
